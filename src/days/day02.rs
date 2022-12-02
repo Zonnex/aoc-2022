@@ -63,7 +63,8 @@ pub fn solve() -> SolutionPair {
         vec![PAPER + LOSS,  SCISSOR + DRAW, ROCK + WIN],    // opponent picks scissor
     ];
 
-    let rounds = input.lines()
+    let rounds = input
+        .lines()
         .into_iter()
         .map(|l| {
             let bytes = l.as_bytes();
