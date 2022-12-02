@@ -1,16 +1,10 @@
-use std::{self, fs};
 use itertools::Itertools;
 use crate::{Solution, SolutionPair};
 
-
 pub fn solve() -> SolutionPair {
-    // Your solution here...
+    let input = include_str!("../../input/day1/real.txt");
 
-    // let file = "../../input/day1/test.txt";
-    let file = include_str!("../../input/day1/real.txt");
-
-    let elf_calories = fs::read_to_string(file)
-        .expect("file not found")
+    let elf_calories = input
         .split("\r\n\r\n")
         .map(|elf| 
             elf.lines()
