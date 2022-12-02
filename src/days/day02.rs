@@ -8,11 +8,6 @@ const ROCK: usize = 1;
 const PAPER: usize = 2;
 const SCISSOR: usize = 3;
 
-/*
-X = lose
-Y = draw
-Z = win
-*/
 
 enum Choice {
     Rock = 0,
@@ -25,11 +20,6 @@ enum Outcome {
     Draw = 1,
     Loss = 2,
 }
-
-const X: usize = 0;
-const Y: usize = 1;
-const Z: usize = 2;
-
 
 fn parse_choice(c: char) -> Choice {
     match c {
@@ -61,16 +51,16 @@ fn score_round_p2(rules: &[Vec<usize>], round: (Choice, Outcome)) -> usize {
 
 pub fn solve() -> SolutionPair {
     let input = include_str!("../../input/day2/real.txt");
-    let p1_rules: Vec<Vec<usize>> = vec![
-        vec![ROCK + DRAW, PAPER + WIN,  SCISSOR + LOSS],
-        vec![ROCK + LOSS, PAPER + DRAW, SCISSOR + WIN],
-        vec![ROCK + WIN,  PAPER + LOSS, SCISSOR + DRAW],
+    let p1_rules = vec![
+        vec![ROCK + DRAW, PAPER + WIN,  SCISSOR + LOSS],    // opponent picks rock
+        vec![ROCK + LOSS, PAPER + DRAW, SCISSOR + WIN],     // opponent picks paper
+        vec![ROCK + WIN,  PAPER + LOSS, SCISSOR + DRAW],    // opponent picks scissor
     ];
 
-    let p2_rules: Vec<Vec<usize>> = vec![
-        vec![SCISSOR + LOSS, ROCK + DRAW, PAPER + WIN], // opponent picks rock
-        vec![ROCK + LOSS, PAPER + DRAW, SCISSOR + WIN], // opponent picks paper
-        vec![PAPER + LOSS,  SCISSOR + DRAW, ROCK + WIN], // opponent picks scissor
+    let p2_rules = vec![
+        vec![SCISSOR + LOSS, ROCK + DRAW, PAPER + WIN],     // opponent picks rock
+        vec![ROCK + LOSS, PAPER + DRAW, SCISSOR + WIN],     // opponent picks paper
+        vec![PAPER + LOSS,  SCISSOR + DRAW, ROCK + WIN],    // opponent picks scissor
     ];
 
     let rounds = input.lines()
