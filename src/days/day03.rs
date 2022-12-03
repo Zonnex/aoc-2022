@@ -1,9 +1,59 @@
+use itertools::Itertools;
+
 use crate::{Solution, SolutionPair};
 
-pub fn solve() -> SolutionPair {
-    // Your solution here...
-    let sol1: u64 = 0;
-    let sol2: u64 = 0;
+fn value(c: u8) -> usize {
+    match c {
+        b'a'..=b'z' => c as usize - b'a' as usize + 1,
+        b'A'..=b'Z' => c as usize - b'A' as usize + 27,
+        _ => unreachable!(),
+    }
+}
 
-    (Solution::U64(sol1), Solution::U64(sol2))
+fn find_match(line: &[u8]) -> Option<u8> {
+    let half = line.len() / 2;
+    for c1 in &line[..half] {
+        for c2 in &line[half..] {
+            if c1 == c2 {
+                return Some(*c1)
+            }
+        }
+    }
+    None
+}
+
+fn find_overlap(elf1: &[u8], elf2: &[u8], elf3: &[u8]) -> Option<u8> {
+    for c1 in elf1 {
+        for c2 in elf2 {
+            if c1 == c2 {
+                for c3 in elf3 {
+                    if c1 == c3 {
+                        return Some(*c1)
+                    }
+                }
+            }
+        }
+    }
+    None
+}
+
+pub fn solve() -> SolutionPair {
+    let input = include_str!("../../input/day3/real.txt");
+
+    let lines = input.lines().map(|l| l.as_bytes()).collect::<Vec<_>>();
+
+    let sol1: usize = lines
+        .iter()
+        .filter_map(|line| find_match(line))
+        .map(value)
+        .sum();
+
+    let sol2: usize = lines
+        .iter()
+        .tuples()
+        .filter_map(|(elf1,elf2,elf3)| find_overlap(elf1, elf2, elf3))
+        .map(value)
+        .sum();
+
+    (Solution::USize(sol1), Solution::USize(sol2))
 }
