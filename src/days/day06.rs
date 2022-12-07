@@ -1,20 +1,22 @@
-use std::collections::HashSet;
-
 use crate::{Solution, SolutionPair};
 
-fn find_first_distinct_combination(input: &str, size: usize) -> usize {
-    let mut hash_set = HashSet::new();
+fn all_unique_bits(chars: &[u8]) -> bool {
+    for i in 1..chars.len() {
+        for j in 0..i {
+            if chars[i] == chars[j] {
+                return false;
+            };
+        }
+    }
+    true
+}
 
-    let (position, _) = input
+fn find_first_distinct_combination(input: &str, size: usize) -> usize {
+    input
         .as_bytes()
         .windows(size)
-        .enumerate()
-        .find(|(_, chars)| {
-            hash_set.clear();
-            chars.iter().all(|c| hash_set.insert(*c))
-        })
-        .expect("Expected to find a position");
-    position + size
+        .position(all_unique_bits)
+        .expect("Expected to find a position") + size
 }
 
 
