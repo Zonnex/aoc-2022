@@ -1,19 +1,19 @@
 use crate::{Solution, SolutionPair};
 
-fn all_unique_bits(chars: &[u8]) -> bool {
-    for i in 1..chars.len() {
-        for j in 0..i {
-            if chars[i] == chars[j] {
-                return false;
-            };
+fn all_unique_bits(masks: &[u32]) -> bool {
+    let mut unique = 0;
+    for mask in masks {
+        if unique | mask == unique {
+            return false;
         }
+        unique |= mask;
     }
     true
 }
 
-fn find_first_distinct_combination(input: &str, size: usize) -> usize {
+
+fn find_first_distinct_combination(input: &[u32], size: usize) -> usize {
     input
-        .as_bytes()
         .windows(size)
         .position(all_unique_bits)
         .expect("Expected to find a position") + size
@@ -22,9 +22,15 @@ fn find_first_distinct_combination(input: &str, size: usize) -> usize {
 
 pub fn solve() -> SolutionPair {
     let input = include_str!("../../input/day6/real.txt");
+    const ASCII_A_LOWERCASE: u8 = 97;
 
-    let sol1: usize = find_first_distinct_combination(input, 4);
-    let sol2: usize = find_first_distinct_combination(input, 14);
+    let mask_vec = input
+        .bytes()
+        .map(|c| 1_u32 << (c - ASCII_A_LOWERCASE))
+        .collect::<Vec<_>>();
+
+    let sol1: usize = find_first_distinct_combination(&mask_vec, 4);
+    let sol2: usize = find_first_distinct_combination(&mask_vec, 14);
 
     (Solution::USize(sol1), Solution::USize(sol2))
 }
