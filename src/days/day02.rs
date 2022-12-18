@@ -50,7 +50,7 @@ fn score_round_p2(rules: &[Vec<usize>], round: (Choice, Outcome)) -> usize {
 }
 
 pub fn solve() -> SolutionPair {
-    let input = include_str!("../../input/day2/real.txt");
+    let input = include_str!("../../input/day02/real.txt");
     let p1_rules = vec![
         vec![ROCK + DRAW, PAPER + WIN,  SCISSOR + LOSS],    // opponent picks rock
         vec![ROCK + LOSS, PAPER + DRAW, SCISSOR + WIN],     // opponent picks paper

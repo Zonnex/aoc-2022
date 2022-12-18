@@ -21,7 +21,7 @@ fn find_first_distinct_combination(input: &[u32], size: usize) -> usize {
 
 
 pub fn solve() -> SolutionPair {
-    let input = include_str!("../../input/day6/real.txt");
+    let input = include_str!("../../input/day06/real.txt");
     const ASCII_A_LOWERCASE: u8 = 97;
 
     let mask_vec = input

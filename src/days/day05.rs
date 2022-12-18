@@ -70,7 +70,7 @@ fn part_two(mut state: Vec<Vec<char>>, instructions: &Vec<Instruction>) -> Strin
 }
 
 pub fn solve() -> SolutionPair {
-    let input = include_str!("../../input/day5/real.txt");
+    let input = include_str!("../../input/day05/real.txt");
 
     let (state, instructions) = input
         .split_once("\r\n\r\n")

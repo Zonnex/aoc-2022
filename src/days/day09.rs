@@ -46,7 +46,7 @@ fn simulate_knots(movements: &[(i32, i32)], knots: usize) -> usize {
 }
 
 pub fn solve() -> SolutionPair {
-    let input = include_str!("../../input/day9/real.txt");
+    let input = include_str!("../../input/day09/real.txt");
 
     let movements = input
         .lines()

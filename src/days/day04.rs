@@ -20,7 +20,7 @@ fn check_any_overlap(l: &RangeInclusive<i32>, r: &RangeInclusive<i32>) -> bool {
 }
 
 pub fn solve() -> SolutionPair {
-    let input = include_str!("../../input/day4/real.txt");
+    let input = include_str!("../../input/day04/real.txt");
 
     let pairs = input
         .lines()

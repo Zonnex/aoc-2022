@@ -38,7 +38,7 @@ fn find_overlap(elf1: &[u8], elf2: &[u8], elf3: &[u8]) -> Option<u8> {
 }
 
 pub fn solve() -> SolutionPair {
-    let input = include_str!("../../input/day3/real.txt");
+    let input = include_str!("../../input/day03/real.txt");
 
     let lines = input.lines().map(|l| l.as_bytes()).collect::<Vec<_>>();
 

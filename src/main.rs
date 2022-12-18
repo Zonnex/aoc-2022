@@ -14,13 +14,15 @@ pub type SolutionPair = (Solution, Solution);
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    if args.len() < 2 {
-        panic!("Please provide the day(s) to run as a command-line argument.");
-    }
-
-    let days: Vec<u8> = args[1..].iter()
-        .map(|x| x.parse().unwrap_or_else(|v| panic!("Not a valid day: {}", v)))
-        .collect();
+    
+    let days: Vec<u8> = match args.len() {
+        0..=1 => (1..=25).collect(),
+        2 => {
+            let val = args[1].parse().unwrap();
+            (val..=val).collect()
+        },
+        _ => (1..=args.iter().last().unwrap().parse().unwrap()).collect()
+    };
 
     let mut runtime = 0.0;
 

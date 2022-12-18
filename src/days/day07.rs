@@ -6,7 +6,7 @@ const PART_ONE_SIZE: i32 = 100_000;
 const PART_TWO_SIZE: i32 = 30_000_000;
 
 pub fn solve() -> SolutionPair {
-    let input = include_str!("../../input/day7/real.txt");
+    let input = include_str!("../../input/day07/real.txt");
 
     let mut dir_sizes: HashMap<String, i32> = HashMap::new();
     let mut current_path = PathBuf::new();

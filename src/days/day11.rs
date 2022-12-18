@@ -99,22 +99,22 @@ fn parse_monkey(monkey: &str) -> Monkey {
     }
 }
 
-fn play_round<F: Fn(u64) -> u64>(monkies: &mut [Monkey], adjust_worry: F) {
-    for i in 0..monkies.len() {
-        let mut monkey = monkies[i].clone();
+fn play_round<F: Fn(u64) -> u64>(monkeys: &mut [Monkey], adjust_worry: F) {
+    for i in 0..monkeys.len() {
+        let mut monkey = monkeys[i].clone();
         while let Some((item, target)) = monkey.throw_next(&adjust_worry) {
-            let target = monkies.get_mut(target).unwrap();
+            let target = monkeys.get_mut(target).unwrap();
             target.receive_item(item);
         }
-        monkies[i] = monkey;
+        monkeys[i] = monkey;
     }
 }
 
-fn simulation<F: Fn(u64) -> u64>(mut monkies: Vec<Monkey>, rounds: i64, adjust_worry: F) -> i64 {
+fn simulation<F: Fn(u64) -> u64>(mut monkeys: Vec<Monkey>, rounds: i64, adjust_worry: F) -> i64 {
     for _ in 0..rounds {
-        play_round(&mut monkies, &adjust_worry);
+        play_round(&mut monkeys, &adjust_worry);
     }
-    monkies
+    monkeys
         .iter()
         .map(|m| m.inspect_count)
         .sorted()
@@ -126,11 +126,11 @@ fn simulation<F: Fn(u64) -> u64>(mut monkies: Vec<Monkey>, rounds: i64, adjust_w
 pub fn solve() -> SolutionPair {
     let input = include_str!("../../input/day11/real.txt");
 
-    let monkies: Vec<Monkey> = input.split("\r\n\r\n").map(parse_monkey).collect();
+    let monkeys: Vec<Monkey> = input.split("\r\n\r\n").map(parse_monkey).collect();
 
-    let modulus: u64 = monkies.iter().map(|m| m.test.divider).product();
-    let p1 = simulation(monkies.clone(), 20, |w| w / 3);
-    let p2 = simulation(monkies, 10000, |w| w % modulus);
+    let modulus: u64 = monkeys.iter().map(|m| m.test.divider).product();
+    let p1 = simulation(monkeys.clone(), 20, |w| w / 3);
+    let p2 = simulation(monkeys, 10000, |w| w % modulus);
 
     (Solution::I64(p1), Solution::I64(p2))
 }

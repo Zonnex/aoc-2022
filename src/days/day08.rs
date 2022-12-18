@@ -40,7 +40,7 @@ fn check_visible(grid: &[Vec<u32>], x: usize, y: usize) -> (bool, u32) {
 }
 
 pub fn solve() -> SolutionPair {
-    let input = include_str!("../../input/day8/real.txt");
+    let input = include_str!("../../input/day08/real.txt");
 
     let grid = input
         .lines()

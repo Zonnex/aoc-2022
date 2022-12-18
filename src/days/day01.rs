@@ -2,7 +2,7 @@ use itertools::Itertools;
 use crate::{Solution, SolutionPair};
 
 pub fn solve() -> SolutionPair {
-    let input = include_str!("../../input/day1/real.txt");
+    let input = include_str!("../../input/day01/real.txt");
 
     let elf_calories = input
         .split("\r\n\r\n")
