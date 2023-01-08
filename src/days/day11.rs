@@ -123,9 +123,7 @@ fn simulation<F: Fn(u64) -> u64>(mut monkeys: Vec<Monkey>, rounds: i64, adjust_w
         .product()
 }
 
-pub fn solve() -> SolutionPair {
-    let input = include_str!("../../input/day11/real.txt");
-
+pub fn solve(input: &str) -> SolutionPair {
     let monkeys: Vec<Monkey> = input.split("\r\n\r\n").map(parse_monkey).collect();
 
     let modulus: u64 = monkeys.iter().map(|m| m.test.divider).product();

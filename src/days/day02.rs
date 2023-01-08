@@ -49,8 +49,7 @@ fn score_round_p2(rules: &[Vec<usize>], round: (Choice, Outcome)) -> usize {
     rules[r as usize][o as usize]
 }
 
-pub fn solve() -> SolutionPair {
-    let input = include_str!("../../input/day02/real.txt");
+pub fn solve(input: &str) -> SolutionPair {
     let p1_rules = vec![
         vec![ROCK + DRAW, PAPER + WIN,  SCISSOR + LOSS],    // opponent picks rock
         vec![ROCK + LOSS, PAPER + DRAW, SCISSOR + WIN],     // opponent picks paper
@@ -82,12 +81,12 @@ pub fn solve() -> SolutionPair {
         })
         .sum();
 
-    let sol2 = rounds.iter()
+    let p2 = rounds.iter()
         .map(|p| {
             let choices = (parse_choice(p.0), parse_outcome(p.1));
             score_round_p2(&p2_rules, choices)
         })
         .sum();
 
-    (Solution::USize(p1), Solution::USize(sol2))
+    (Solution::USize(p1), Solution::USize(p2))
 }

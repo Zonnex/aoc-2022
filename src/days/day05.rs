@@ -69,9 +69,7 @@ fn part_two(mut state: Vec<Vec<char>>, instructions: &Vec<Instruction>) -> Strin
     String::from_iter(chars)
 }
 
-pub fn solve() -> SolutionPair {
-    let input = include_str!("../../input/day05/real.txt");
-
+pub fn solve(input: &str) -> SolutionPair {
     let (state, instructions) = input
         .split_once("\r\n\r\n")
         .expect("Invalid input for day5");
@@ -93,8 +91,8 @@ pub fn solve() -> SolutionPair {
         })
         .collect::<Vec<_>>();
 
-    let sol1 = part_one(state.clone(), &instructions);
-    let sol2 = part_two(state, &instructions);
+    let p1 = part_one(state.clone(), &instructions);
+    let p2 = part_two(state, &instructions);
 
-    (Solution::Str(sol1), Solution::Str(sol2))
+    (Solution::Str(p1), Solution::Str(p2))
 }

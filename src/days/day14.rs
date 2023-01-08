@@ -105,9 +105,7 @@ fn part_two(mut map: Map, inlet: Position, depth: usize) -> (usize, Map) {
     (rests, map)
 }
 
-pub fn solve() -> SolutionPair {
-    let input = include_str!("../../input/day14/real.txt");
-
+pub fn solve(input: &str) -> SolutionPair {
     let inlet = (500, 0);
 
     let mut map: Map = HashMap::new();
@@ -115,7 +113,7 @@ pub fn solve() -> SolutionPair {
     let (_, _, _, map_depth) = map_anchors(&map);
 
     let (p1, map) = part_one(map, inlet, map_depth);
-    let (p2, map) = part_two(map, inlet, map_depth + 1);
+    let (p2, _map) = part_two(map, inlet, map_depth + 1);
 
     (Solution::USize(p1), Solution::USize(p2))
 }

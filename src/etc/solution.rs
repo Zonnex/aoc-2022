@@ -9,7 +9,8 @@ pub enum Solution {
     U64(u64),
     U128(u128),
     Str(String),
-    USize(usize)
+    USize(usize),
+    ISize(isize)
 }
 
 impl Display for Solution {
@@ -22,7 +23,8 @@ impl Display for Solution {
             U64(x) => x.fmt(f),
             U128(x) => x.fmt(f),
             Str(x) => x.fmt(f),
-            USize(x) => x.fmt(f)
+            USize(x) => x.fmt(f),
+            ISize(x) => x.fmt(f)
         }
     }
 }

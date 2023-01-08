@@ -1,4 +1,7 @@
-use std::collections::HashSet;
+use std::{
+    collections::{HashSet, VecDeque},
+    ops::Add,
+};
 
 use itertools::Itertools;
 
@@ -13,27 +16,30 @@ const DIRS: [(i32, i32, i32); 6] = [
     (0, 0, 1),
 ];
 
-#[derive(Hash, Eq, PartialEq)]
+#[derive(Hash, Eq, PartialEq, Clone, Copy)]
 struct Position(i32, i32, i32);
 
-struct GridRange {
-    x_min: i32,
-    x_max: i32,
-    y_min: i32,
-    y_max: i32,
-    z_min: i32,
-    z_max: i32,
+impl Add<(i32, i32, i32)> for Position {
+    type Output = Position;
+
+    fn add(self, (dx, dy, dz): (i32, i32, i32)) -> Self::Output {
+        let Position(x, y, z) = self;
+        Position(x + dx, y + dy, z + dz)
+    }
 }
 
-impl Default for GridRange {
+struct GridSize {
+    x: i32,
+    y: i32,
+    z: i32,
+}
+
+impl Default for GridSize {
     fn default() -> Self {
         Self {
-            x_min: i32::MAX,
-            x_max: i32::MIN,
-            y_min: i32::MAX,
-            y_max: i32::MIN,
-            z_min: i32::MAX,
-            z_max: i32::MIN,
+            x: i32::MIN,
+            y: i32::MIN,
+            z: i32::MIN,
         }
     }
 }
@@ -54,36 +60,36 @@ fn part_one(boxes: &HashSet<Position>) -> usize {
         .sum()
 }
 
-fn part_two(boxes: &HashSet<Position>, visible_sides: usize, range: GridRange) -> usize {
+fn part_two(boxes: &HashSet<Position>, range: GridSize) -> usize {
+    let mut visited = HashSet::new();
+    let mut queue = VecDeque::new();
+    queue.push_back(Position(0, 0, 0));
+    let mut total = 0;
 
-    // try flood fill instead
-    0
-    // let mut air_pockets = Vec::new();
+    while let Some(position) = queue.pop_front() {
+        if visited.contains(&position) {
+            continue;
+        }
 
-    // for x in range.x_min..=range.x_max {
-    //     for y in range.y_min..=range.y_max {
-    //         for z in range.z_min..=range.z_max {
-    //             match boxes.get(&Position(x, y, z)) {
-    //                 None => {
-    //                     // might be an air pocket
-    //                     if DIRS.iter().all(|(dx, dy, dz)| {
-    //                         let side = Position(x + dx, y + dy, z + dz);
-    //                         boxes.contains(&side)
-    //                     }) {
-    //                         air_pockets.push((x, y, z));
-    //                     }
-    //                 }
-    //                 _ => continue,
-    //             }
-    //         }
-    //     }
-    // }
-    // visible_sides - air_pockets.len() * 6
+        for dir in DIRS.iter() {
+            let side = position.add(*dir);
+            if boxes.contains(&side) {
+                total += 1;
+            } else if (0..=range.x+5).contains(&side.0)
+                && (0..=range.y+5).contains(&side.1)
+                && (0..=range.z+5).contains(&side.2)
+            {
+                queue.push_back(side);
+            }
+        }
+
+        visited.insert(position);
+    }
+    total
 }
 
-pub fn solve() -> SolutionPair {
-    let input = include_str!("../../input/day18/real.txt");
-    let mut grid_range = GridRange::default();
+pub fn solve(input: &str) -> SolutionPair {
+    let mut grid_size = GridSize::default();
 
     let boxes = input
         .lines()
@@ -95,28 +101,26 @@ pub fn solve() -> SolutionPair {
         })
         .map(|(x, y, z)| Position(x, y, z))
         .map(|Position(x, y, z)| {
-            grid_range.x_min = grid_range.x_min.min(x);
-            grid_range.x_max = grid_range.x_max.max(x);
-            grid_range.y_min = grid_range.y_min.min(y);
-            grid_range.y_max = grid_range.y_max.max(y);
-            grid_range.z_min = grid_range.z_min.min(z);
-            grid_range.z_max = grid_range.z_max.max(z);
+            grid_size.x = grid_size.x.max(x);
+            grid_size.y = grid_size.y.max(y);
+            grid_size.z = grid_size.z.max(z);
             Position(x, y, z)
         })
         .collect::<HashSet<_>>();
 
     let p1 = part_one(&boxes);
-    let p2 = part_two(&boxes, p1, grid_range);
+    let p2 = part_two(&boxes, grid_size);
 
     (Solution::USize(p1), Solution::USize(p2))
 }
-
 
 #[cfg(test)]
 mod tests {
 
     #[test]
     fn solve() {
-        let (p1, p2) = super::solve();
+        let input = include_str!("../../input/day18/test.txt");
+        let (p1, p2) = super::solve(input);
+        println!("{}, {}", p1, p2);
     }
 }

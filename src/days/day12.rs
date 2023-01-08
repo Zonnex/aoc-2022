@@ -50,6 +50,8 @@ fn search(grid: &Grid, start: Position, end: Position) -> Option<u32> {
 fn find(grid: &Grid, c: u8) -> Position {
     let height = grid.len();
     let width = grid[0].len();
+    
+    #[allow(clippy::needless_range_loop)]
     for y in 0..height {
         for x in 0..width {
             let v = grid[y][x];
@@ -61,9 +63,7 @@ fn find(grid: &Grid, c: u8) -> Position {
     panic!("Couldn't find {}", c)
 }
 
-pub fn solve() -> SolutionPair {
-    let input = include_str!("../../input/day12/real.txt");
-
+pub fn solve(input: &str) -> SolutionPair {
     let mut grid: Grid = input.lines().map(|line| line.as_bytes().to_vec()).collect();
 
     let start = find(&grid, b'S');

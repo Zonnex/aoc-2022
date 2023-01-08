@@ -109,9 +109,7 @@ fn trim_input(input: &str) -> String {
         .replace(" has flow rate", "")
 }
 
-pub fn solve() -> SolutionPair {
-    let input = include_str!("../../input/day16/real.txt");
-
+pub fn solve(input: &str) -> SolutionPair {
     let input = trim_input(input);
 
     let valves = input
@@ -123,9 +121,9 @@ pub fn solve() -> SolutionPair {
         .collect::<HashMap<_, _>>();
 
     let p1 = part_one(valves, "AA", 30);
-    let sol2: u64 = 0;
+    let p2: u64 = 0;
 
-    (Solution::USize(p1), Solution::U64(sol2))
+    (Solution::USize(p1), Solution::U64(p2))
 }
 
 #[cfg(test)]
@@ -137,7 +135,8 @@ mod tests {
 
     #[test]
     fn test_day() {
-        let (p1, _) = super::solve();
+        let input = include_str!("../../input/day16/test.txt");
+        let (p1, _) = super::solve(input);
         if let Solution::U32(p1) = p1 {
             assert_eq!(p1, 1651);
         }

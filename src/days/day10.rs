@@ -30,9 +30,7 @@ fn render_screen(cycles: &[i32]) -> String {
     pixels
 }
 
-pub fn solve() -> SolutionPair {
-    let input = include_str!("../../input/day10/real.txt");
-
+pub fn solve(input: &str) -> SolutionPair {
     let mut x = 1;
     let mut cycles = Vec::with_capacity(240);
 
@@ -44,12 +42,12 @@ pub fn solve() -> SolutionPair {
         }
     }
 
-    let sol1 = (20..=220)
+    let p1 = (20..=220)
         .step_by(40)
         .map(|i| i as i32 * cycles.index(i - 1))
         .sum();
 
     let pixels = render_screen(&cycles);
 
-    (Solution::I32(sol1), Solution::Str(pixels))
+    (Solution::I32(p1), Solution::Str(pixels))
 }

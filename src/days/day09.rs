@@ -45,9 +45,7 @@ fn simulate_knots(movements: &[(i32, i32)], knots: usize) -> usize {
     tail_positions.len()
 }
 
-pub fn solve() -> SolutionPair {
-    let input = include_str!("../../input/day09/real.txt");
-
+pub fn solve(input: &str) -> SolutionPair {
     let movements = input
         .lines()
         .flat_map(|l| {

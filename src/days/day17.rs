@@ -13,7 +13,7 @@ struct Position {
 impl Add<(isize, isize)> for Position {
     type Output = Position;
 
-    fn add(self, rhs: (isize, isize)) -> Self::Output {
+    fn add(self, _rhs: (isize, isize)) -> Self::Output {
         todo!()
     }
 }
@@ -21,21 +21,21 @@ impl Add<(isize, isize)> for Position {
 impl Add<(isize, isize)> for &Position {
     type Output = Position;
 
-    fn add(self, rhs: (isize, isize)) -> Self::Output {
+    fn add(self, _rhs: (isize, isize)) -> Self::Output {
         todo!()
     }
 }
 
 impl Add<(usize, usize)> for &Position {
     type Output = Position;
-    fn add(self, rhs: (usize, usize)) -> Self::Output {
+    fn add(self, _rhs: (usize, usize)) -> Self::Output {
         todo!()
     }
 }
 
 impl Add<(usize, usize)> for Position {
     type Output = Position;
-    fn add(self, rhs: (usize, usize)) -> Self::Output {
+    fn add(self, _rhs: (usize, usize)) -> Self::Output {
         todo!()
     }
 }
@@ -92,10 +92,10 @@ struct Rock {
 impl Map {
     fn try_fit(&self, rock: &Rock, destination: &Position) -> bool {
         for (dy, row) in rock.shape.iter().rev().enumerate() {
-            for (dx, column) in row.iter().filter(|&&c| c == ROCK).enumerate() {
+            for (dx, _column) in row.iter().filter(|&&c| c == ROCK).enumerate() {
                 let pixel = destination + (dx, dy);
                 match self.map.get(&pixel) {
-                    Some(v) => todo!(),
+                    Some(_v) => todo!(),
                     None => todo!(),
                 }
             }
@@ -121,9 +121,7 @@ impl Map {
     }
 }
 
-pub fn solve() -> SolutionPair {
-    let input = include_str!("../../input/day17/test.txt");
-
+pub fn solve(input: &str) -> SolutionPair {
     let dxs = input
         .as_bytes()
         .iter()

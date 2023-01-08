@@ -101,17 +101,10 @@ fn merge_range(mut acc: Vec<(i64, i64)>, (x1, x2): Position) -> Vec<(i64, i64)> 
     acc
 }
 
-pub fn solve() -> SolutionPair {
-    let test = false;
-    let (input, y, size) = if test {
-        let input = include_str!("../../input/day15/test.txt");
-        let line = 10;
-        (input, line, 20)
-    } else {
-        let input = include_str!("../../input/day15/real.txt");
-        let line = 2_000_000;
-        (input, line, 4_000_000)
-    };
+pub fn solve(input: &str) -> SolutionPair {
+    let input = input;
+    let y = 2_000_000;
+    let size = 4_000_000;
 
     let sensors = input.lines().filter_map(Sensor::parse).collect::<Vec<_>>();
 

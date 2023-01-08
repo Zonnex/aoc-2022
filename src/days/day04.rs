@@ -19,9 +19,7 @@ fn check_any_overlap(l: &RangeInclusive<i32>, r: &RangeInclusive<i32>) -> bool {
     || r.contains(l.start()) || r.contains(l.end())
 }
 
-pub fn solve() -> SolutionPair {
-    let input = include_str!("../../input/day04/real.txt");
-
+pub fn solve(input: &str) -> SolutionPair {
     let pairs = input
         .lines()
         .map(|line| {
@@ -30,13 +28,13 @@ pub fn solve() -> SolutionPair {
         })
         .collect::<Vec<_>>();
 
-    let sol1 = pairs.iter()
+    let p1 = pairs.iter()
         .filter(|(r1,r2)| check_full_overlap(r1, r2))
         .count();
     
-    let sol2 = pairs.iter()
+    let p2 = pairs.iter()
         .filter(|(r1,r2)| check_any_overlap(r1, r2))
         .count();
 
-    (Solution::USize(sol1), Solution::USize(sol2))
+    (Solution::USize(p1), Solution::USize(p2))
 }

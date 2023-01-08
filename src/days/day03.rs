@@ -37,23 +37,21 @@ fn find_overlap(elf1: &[u8], elf2: &[u8], elf3: &[u8]) -> Option<u8> {
     None
 }
 
-pub fn solve() -> SolutionPair {
-    let input = include_str!("../../input/day03/real.txt");
-
+pub fn solve(input: &str) -> SolutionPair {
     let lines = input.lines().map(|l| l.as_bytes()).collect::<Vec<_>>();
 
-    let sol1: usize = lines
+    let p1: usize = lines
         .iter()
         .filter_map(|line| find_match(line))
         .map(value)
         .sum();
 
-    let sol2: usize = lines
+    let p2: usize = lines
         .iter()
         .tuples()
         .filter_map(|(elf1,elf2,elf3)| find_overlap(elf1, elf2, elf3))
         .map(value)
         .sum();
 
-    (Solution::USize(sol1), Solution::USize(sol2))
+    (Solution::USize(p1), Solution::USize(p2))
 }

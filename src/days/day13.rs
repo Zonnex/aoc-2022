@@ -47,9 +47,7 @@ fn compare(a: &Value, b: &Value) -> Ordering {
     }
 }
 
-pub fn solve() -> SolutionPair {
-    let input = include_str!("../../input/day13/real.txt");
-
+pub fn solve(input: &str) -> SolutionPair {
     let mut signals = parse_signals(input);
 
     let p1 = signals
