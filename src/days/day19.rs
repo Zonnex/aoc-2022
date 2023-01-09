@@ -3,7 +3,6 @@ use std::collections::HashMap;
 use crate::{Solution, SolutionPair};
 use itertools::Itertools;
 
-
 struct Blueprint {
     ore: u8,
     clay: u8,
@@ -15,7 +14,7 @@ enum Resource {
     Ore,
     Clay,
     Obsidian,
-    Geode
+    Geode,
 }
 
 struct State {
@@ -26,7 +25,7 @@ struct State {
 impl Default for State {
     fn default() -> Self {
         Self {
-            ores: [1,0,0,0],
+            ores: [1, 0, 0, 0],
             robots: Default::default(),
         }
     }
@@ -44,19 +43,22 @@ impl State {
         self.try_options(blueprint, &mut cache, 24)
     }
 
-    fn try_options(&self, blueprint: &Blueprint, _cache: &mut HashMap<(State,u8), u32>, minutes: u8) -> u32 {
+    fn try_options(
+        &self,
+        blueprint: &Blueprint,
+        _cache: &mut HashMap<(State, u8), u32>,
+        minutes: u8,
+    ) -> u32 {
         if minutes == 0 {
-            return 0
+            return 0;
         }
-        if self.try_buy(blueprint, Resource::Geode) {
-            
-        }
+        if self.try_buy(blueprint, Resource::Geode) {}
         0
     }
 
     fn try_buy(&self, blueprint: &Blueprint, resource: Resource) -> bool {
         if self.can_afford(blueprint, resource) {
-            return true
+            return true;
         }
         false
     }
@@ -66,7 +68,7 @@ impl State {
             Resource::Ore => self.ores[0] >= blueprint.ore,
             Resource::Clay => self.ores[1] >= blueprint.clay,
             Resource::Obsidian => self.ores[0] > blueprint.ore && self.ores[1] >= blueprint.clay,
-            Resource::Geode => self.ores[0] > blueprint.ore && self.ores[2] > blueprint.geode.1
+            Resource::Geode => self.ores[0] > blueprint.ore && self.ores[2] > blueprint.geode.1,
         }
     }
 }

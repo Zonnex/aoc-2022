@@ -3,7 +3,10 @@ use std::{
     collections::{BinaryHeap, HashMap, HashSet},
 };
 
-use crate::{Solution, SolutionPair};
+use crate::{
+    utils::vector_2d::{Vector2D, E, N, S, W},
+    Solution, SolutionPair,
+};
 
 type Bounds = (usize, usize);
 
@@ -14,48 +17,6 @@ enum Entity {
     Exit,
     Wall,
 }
-
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
-struct Vector2D {
-    x: isize,
-    y: isize,
-}
-
-impl Vector2D {
-    fn manhattan_distance(&self, v: Vector2D) -> usize {
-        self.x.abs_diff(v.x) + self.y.abs_diff(v.y)
-    }
-}
-
-impl std::ops::Add<Vector2D> for Vector2D {
-    type Output = Self;
-
-    fn add(self, rhs: Vector2D) -> Self::Output {
-        Self {
-            x: self.x + rhs.x,
-            y: self.y + rhs.y,
-        }
-    }
-}
-
-impl std::ops::Mul<usize> for Vector2D {
-    type Output = Self;
-
-    fn mul(self, rhs: usize) -> Self::Output {
-        let rhs = rhs as isize;
-
-        Vector2D {
-            x: self.x * rhs,
-            y: self.y * rhs,
-        }
-    }
-}
-
-const N: Vector2D = Vector2D { x: 0, y: 1 };
-const E: Vector2D = Vector2D { x: 1, y: 0 };
-const W: Vector2D = Vector2D { x: -1, y: 0 };
-const S: Vector2D = Vector2D { x: 0, y: -1 };
-
 struct Canyon {
     bounds: Bounds,
     entities: HashMap<Vector2D, Entity>,
@@ -169,7 +130,7 @@ impl Canyon {
 
         queue.push(HeapData {
             time: start_time,
-            distance: start.manhattan_distance(end),
+            distance: start.distance_to(end),
             point: start,
         });
 
@@ -183,7 +144,7 @@ impl Canyon {
                 if self.can_move_to(data.point, time) {
                     queue.push(HeapData {
                         time,
-                        distance: data.point.manhattan_distance(end),
+                        distance: data.point.distance_to(end),
                         point: data.point,
                     });
                 }
@@ -195,7 +156,7 @@ impl Canyon {
                 {
                     queue.push(HeapData {
                         time,
-                        distance: p.manhattan_distance(end),
+                        distance: p.distance_to(end),
                         point: p,
                     });
                 }
@@ -243,7 +204,6 @@ fn parse_input(input: &str) -> Canyon {
 }
 
 pub fn solve(input: &str) -> SolutionPair {
-    
     let map = parse_input(input);
 
     let (start, end) = map.find_entrance_exit();
@@ -251,7 +211,10 @@ pub fn solve(input: &str) -> SolutionPair {
     let end_to_start = map.find_path(end, start, start_to_end);
     let and_back_again = map.find_path(start, end, end_to_start);
 
-    (Solution::USize(start_to_end), Solution::USize(and_back_again))
+    (
+        Solution::USize(start_to_end),
+        Solution::USize(and_back_again),
+    )
 }
 
 #[cfg(test)]

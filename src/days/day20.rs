@@ -37,8 +37,6 @@ fn mix(original: &[isize], iterations: usize, decrypt_key: isize) -> isize {
 }
 
 pub fn solve(input: &str) -> SolutionPair {
-    let input = include_str!("../../input/day20/real.txt");
-
     let values: Vec<isize> = input
         .lines()
         .map(|l| l.parse().unwrap())

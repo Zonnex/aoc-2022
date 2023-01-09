@@ -11,6 +11,8 @@ use std::time::Instant;
 
 pub type SolutionPair = (Solution, Solution);
 
+mod utils;
+
 fn main() {
     let args: Vec<String> = env::args().collect();
 

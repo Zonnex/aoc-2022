@@ -1,6 +1,6 @@
 use crate::{Solution, SolutionPair};
 
-pub fn solve(input: &str) -> SolutionPair {
+pub fn solve(_input: &str) -> SolutionPair {
     // Your solution here...
     let p1: u64 = 0;
     let p2: u64 = 0;
