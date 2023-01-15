@@ -20,7 +20,7 @@ fn main() {
         0..=1 => (1..=25).collect(),
         2 => {
             let val = args[1].parse().unwrap();
-            (val..=val).collect()
+            vec![val]
         }
         _ => (1..=args.iter().last().unwrap().parse().unwrap()).collect(),
     };

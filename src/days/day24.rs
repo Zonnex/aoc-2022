@@ -4,7 +4,7 @@ use std::{
 };
 
 use crate::{
-    utils::vector_2d::{Vector2D, E, N, S, W},
+    utils::vector_2d::{Vector2, E, N, S, W},
     Solution, SolutionPair,
 };
 
@@ -12,21 +12,21 @@ type Bounds = (usize, usize);
 
 #[derive(PartialEq)]
 enum Entity {
-    Blizzard(Vector2D),
+    Blizzard(Vector2),
     Entrance,
     Exit,
     Wall,
 }
 struct Canyon {
     bounds: Bounds,
-    entities: HashMap<Vector2D, Entity>,
+    entities: HashMap<Vector2, Entity>,
 }
 
 #[derive(Debug, Eq)]
 struct HeapData {
     time: usize,
     distance: usize,
-    point: Vector2D,
+    point: Vector2,
 }
 
 impl Ord for HeapData {
@@ -51,16 +51,16 @@ impl PartialEq for HeapData {
 }
 
 impl Canyon {
-    fn position_at_offset(&self, position: Vector2D, offsets: Vector2D) -> Vector2D {
+    fn position_at_offset(&self, position: Vector2, offsets: Vector2) -> Vector2 {
         let (width, height) = self.bounds;
         let (width, height) = (width as isize, height as isize);
 
-        Vector2D {
+        Vector2 {
             x: (position.x - 1 + offsets.x).rem_euclid(width - 2) + 1,
             y: (position.y - 1 + offsets.y).rem_euclid(height - 2) + 1,
         }
     }
-    fn positions_at_offset(&self, p: Vector2D, offset: usize) -> [Vector2D; 4] {
+    fn positions_at_offset(&self, p: Vector2, offset: usize) -> [Vector2; 4] {
         [
             self.position_at_offset(p, N * offset),
             self.position_at_offset(p, E * offset),
@@ -69,14 +69,14 @@ impl Canyon {
         ]
     }
 
-    fn is_in_bounds(&self, v: Vector2D) -> bool {
+    fn is_in_bounds(&self, v: Vector2) -> bool {
         let (width, height) = self.bounds;
         let (x, y) = (v.x, v.y);
 
         x.is_positive() && y.is_positive() && (x as usize).lt(&width) && (y as usize).lt(&height)
     }
 
-    fn can_move_to(&self, position: Vector2D, time: usize) -> bool {
+    fn can_move_to(&self, position: Vector2, time: usize) -> bool {
         match self.entities.get(&position) {
             Some(Entity::Exit) => true,
             Some(Entity::Entrance) => true,
@@ -108,7 +108,7 @@ impl Canyon {
         }
     }
 
-    fn find_entrance_exit(&self) -> (Vector2D, Vector2D) {
+    fn find_entrance_exit(&self) -> (Vector2, Vector2) {
         let mut entrance_key = None;
         let mut exit_key = None;
         let mut iter = self.entities.iter();
@@ -125,7 +125,7 @@ impl Canyon {
         (entrance_key.unwrap(), exit_key.unwrap())
     }
 
-    fn find_path(&self, start: Vector2D, end: Vector2D, start_time: usize) -> usize {
+    fn find_path(&self, start: Vector2, end: Vector2, start_time: usize) -> usize {
         let mut queue = BinaryHeap::new();
 
         queue.push(HeapData {
@@ -179,7 +179,7 @@ fn parse_input(input: &str) -> Canyon {
             l.bytes().enumerate().map(move |(x, b)| {
                 let x = x as isize;
                 let y = y as isize;
-                (Vector2D { x, y }, b)
+                (Vector2 { x, y }, b)
             })
         })
         .filter_map(|(p, b)| match b {
@@ -194,11 +194,11 @@ fn parse_input(input: &str) -> Canyon {
 
     let x = 1;
     let y = height as isize - 1;
-    entities.insert(Vector2D { x, y }, Entity::Entrance);
+    entities.insert(Vector2 { x, y }, Entity::Entrance);
 
     let x = width as isize - 2;
     let y = 0;
-    entities.insert(Vector2D { x, y }, Entity::Exit);
+    entities.insert(Vector2 { x, y }, Entity::Exit);
 
     Canyon { entities, bounds }
 }

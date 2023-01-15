@@ -1,7 +1,4 @@
-use std::{
-    collections::{HashSet, VecDeque},
-    ops::Add,
-};
+use std::{collections::HashSet, ops::Add};
 
 use itertools::Itertools;
 
@@ -60,13 +57,19 @@ fn part_one(boxes: &HashSet<Position>) -> usize {
         .sum()
 }
 
-fn part_two(boxes: &HashSet<Position>, range: GridSize) -> usize {
+fn bounds_check(Position(x, y, z): &Position, bounds: &GridSize) -> bool {
+    let (x2, y2, z2) = (bounds.x + 1, bounds.y + 1, bounds.z + 1);
+
+    (-1..=x2).contains(x) && (-1..=y2).contains(y) && (-1..=z2).contains(z)
+}
+
+fn part_two(boxes: &HashSet<Position>, bounds: GridSize) -> usize {
     let mut visited = HashSet::new();
-    let mut queue = VecDeque::new();
-    queue.push_back(Position(0, 0, 0));
+    let mut queue = Vec::new();
+    queue.push(Position(0, 0, 0));
     let mut total = 0;
 
-    while let Some(position) = queue.pop_front() {
+    while let Some(position) = queue.pop() {
         if visited.contains(&position) {
             continue;
         }
@@ -75,11 +78,8 @@ fn part_two(boxes: &HashSet<Position>, range: GridSize) -> usize {
             let side = position.add(*dir);
             if boxes.contains(&side) {
                 total += 1;
-            } else if (0..=range.x+5).contains(&side.0)
-                && (0..=range.y+5).contains(&side.1)
-                && (0..=range.z+5).contains(&side.2)
-            {
-                queue.push_back(side);
+            } else if bounds_check(&side, &bounds) {
+                queue.push(side);
             }
         }
 

@@ -2,23 +2,24 @@
 
 use std::ops::{Add, AddAssign, Sub, SubAssign};
 
-pub const N: Vector2D = Vector2D { x: 0, y: 1 };
-pub const E: Vector2D = Vector2D { x: 1, y: 0 };
-pub const W: Vector2D = Vector2D { x: -1, y: 0 };
-pub const S: Vector2D = Vector2D { x: 0, y: -1 };
+pub const N: Vector2 = Vector2 { x: 0, y: 1 };
+pub const E: Vector2 = Vector2 { x: 1, y: 0 };
+pub const W: Vector2 = Vector2 { x: -1, y: 0 };
+pub const S: Vector2 = Vector2 { x: 0, y: -1 };
 
 #[derive(Clone, Copy, Debug, Default, Hash, PartialEq, Eq, PartialOrd, Ord)]
-pub struct Vector2D {
+pub struct Vector2 {
     pub x: isize,
     pub y: isize,
 }
 
-impl Vector2D {
-    pub const fn new(x: isize, y: isize) -> Self {
-        Vector2D { x, y }
+impl Vector2 {
+
+    pub const fn new_usize(x: usize, y: usize) -> Self {
+        Vector2 { x: x as isize, y: y as isize }
     }
 
-    pub fn adjacent_points(&self) -> [Vector2D; 4] {
+    pub fn adjacent_points(&self) -> [Vector2; 4] {
         [N, E, W, S].map(|d| *self + d)
     }
 
@@ -42,123 +43,134 @@ impl Vector2D {
         self.x.unsigned_abs() + self.y.unsigned_abs()
     }
 
-    pub fn distance_to(&self, other: Vector2D) -> usize {
+    pub fn distance_to(&self, other: Vector2) -> usize {
         self.x.abs_diff(other.x) + self.y.abs_diff(other.y)
     }
 }
 
-impl Add<Vector2D> for Vector2D {
-    type Output = Vector2D;
+impl TryFrom<(usize, usize)> for Vector2 {
+    type Error = &'static str;
 
-    fn add(self, rhs: Vector2D) -> Self::Output {
-        Vector2D {
+    fn try_from(value: (usize, usize)) -> Result<Self, Self::Error> {
+        let x = isize::try_from(value.0).map_err(|_| "x value is too large for isize")?;
+        let y = isize::try_from(value.1).map_err(|_| "y value is too large for isize")?;
+        Ok(Vector2 { x, y })
+    }
+}
+
+
+impl Add<Vector2> for Vector2 {
+    type Output = Vector2;
+
+    fn add(self, rhs: Vector2) -> Self::Output {
+        Vector2 {
             x: self.x + rhs.x,
             y: self.y + rhs.y,
         }
     }
 }
 
-impl Add<&Vector2D> for Vector2D {
-    type Output = Vector2D;
+impl Add<&Vector2> for Vector2 {
+    type Output = Vector2;
 
-    fn add(self, rhs: &Vector2D) -> Self::Output {
-        Vector2D {
+    fn add(self, rhs: &Vector2) -> Self::Output {
+        Vector2 {
             x: self.x + rhs.x,
             y: self.y + rhs.y,
         }
     }
 }
 
-impl Add<&(isize, isize)> for Vector2D {
-    type Output = Vector2D;
+impl Add<&(isize, isize)> for Vector2 {
+    type Output = Vector2;
 
     fn add(self, rhs: &(isize, isize)) -> Self::Output {
-        Vector2D {
+        Vector2 {
             x: self.x + rhs.0,
             y: self.y + rhs.1,
         }
     }
 }
 
-impl Add<(isize, isize)> for Vector2D {
-    type Output = Vector2D;
+impl Add<(isize, isize)> for Vector2 {
+    type Output = Vector2;
 
     fn add(self, rhs: (isize, isize)) -> Self::Output {
-        Vector2D {
+        Vector2 {
             x: self.x + rhs.0,
             y: self.y + rhs.1,
         }
     }
 }
 
-impl Add<(usize, usize)> for Vector2D {
-    type Output = Vector2D;
+impl Add<(usize, usize)> for Vector2 {
+    type Output = Vector2;
 
     fn add(self, rhs: (usize, usize)) -> Self::Output {
-        Vector2D {
+        Vector2 {
             x: self.x + rhs.0 as isize,
             y: self.y + rhs.1 as isize,
         }
     }
 }
 
-impl AddAssign<Vector2D> for Vector2D {
-    fn add_assign(&mut self, rhs: Vector2D) {
+impl AddAssign<Vector2> for Vector2 {
+    fn add_assign(&mut self, rhs: Vector2) {
         self.x += rhs.x;
         self.y += rhs.y;
     }
 }
 
-impl AddAssign<&Vector2D> for Vector2D {
-    fn add_assign(&mut self, rhs: &Vector2D) {
+impl AddAssign<&Vector2> for Vector2 {
+    fn add_assign(&mut self, rhs: &Vector2) {
         self.x += rhs.x;
         self.y += rhs.y;
     }
 }
 
-impl Sub<Vector2D> for Vector2D {
-    type Output = Vector2D;
+impl Sub<Vector2> for Vector2 {
+    type Output = Vector2;
 
-    fn sub(self, rhs: Vector2D) -> Self::Output {
-        Vector2D {
+    fn sub(self, rhs: Vector2) -> Self::Output {
+        Vector2 {
             x: self.x - rhs.x,
             y: self.y - rhs.y,
         }
     }
 }
 
-impl Sub<&Vector2D> for Vector2D {
-    type Output = Vector2D;
+impl Sub<&Vector2> for Vector2 {
+    type Output = Vector2;
 
-    fn sub(self, rhs: &Vector2D) -> Self::Output {
-        Vector2D {
+    fn sub(self, rhs: &Vector2) -> Self::Output {
+        Vector2 {
             x: self.x - rhs.x,
             y: self.y - rhs.y,
         }
     }
 }
 
-impl SubAssign<Vector2D> for Vector2D {
-    fn sub_assign(&mut self, rhs: Vector2D) {
+impl SubAssign<Vector2> for Vector2 {
+    fn sub_assign(&mut self, rhs: Vector2) {
         self.x -= rhs.x;
         self.y -= rhs.y;
     }
 }
 
-impl SubAssign<&Vector2D> for Vector2D {
-    fn sub_assign(&mut self, rhs: &Vector2D) {
+impl SubAssign<&Vector2> for Vector2 {
+    fn sub_assign(&mut self, rhs: &Vector2) {
         self.x -= rhs.x;
         self.y -= rhs.y;
     }
 }
 
-impl std::ops::Mul<usize> for Vector2D {
+impl std::ops::Mul<usize> for Vector2 {
     type Output = Self;
 
     fn mul(self, rhs: usize) -> Self::Output {
         let rhs = rhs as isize;
 
-        Vector2D {
+        Vector2 {
             x: self.x * rhs,
             y: self.y * rhs,
         }
